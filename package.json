@@ -1,0 +1,13 @@
+{
+  "name": "verify_link",
+  "version": "0.1.0",
+  "private": true,
+  "authors": "https://github.com/hustKiwi",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@bd.ysmood.org:8022/hustKiwi/verify_link.git"
+  },
+  "devDependencies": {
+    "nokit": "^0.5.4"
+  }
+}
