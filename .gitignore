@@ -1,8 +1,9 @@
 # Customized
 *.swp
 *.swo
+*.txt
 .idea
-.nobone
+.coffee
 node_modules
 
 # Compiled source #
