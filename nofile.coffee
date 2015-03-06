@@ -1,5 +1,6 @@
 kit = require 'nokit'
 moment = require 'moment'
+cfg = require './cfg'
 
 kit.require 'jhash'
 kit.require 'colors'
@@ -40,7 +41,7 @@ sids = [123858308,7905056,108236178,1010926,31336224,623892,91010155,85079712,80
 verify_song = (sid) ->
     get_song = kit.flow songinfo_url, curl, parse_songinfo
 
-    kit.sleep(300).then ->
+    kit.sleep(cfg.sleep).then ->
         get_song(sid)
     .then (song) ->
         old_hash = logs[sid]
@@ -62,11 +63,11 @@ module.exports = (task, option) ->
         l = sids.length
         args = []
 
-        while i++ < 10000
+        while i++ < cfg.total
             sid = sids[i % l]
             args.push [i, sid]
 
-        kit.async 5, ->
+        kit.async cfg.limit, ->
             arg = args.shift()
             if arg
                 [i, sid] = arg
