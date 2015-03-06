@@ -52,7 +52,7 @@ verify_song = (sid) ->
                 logs[sid] = new_hash
                 return kit.outputFile('hash.txt', JSON.stringify(logs))
 
-            unless _.isEqual(new_hash, old_hash)
+            if not _.isEqual(new_hash, old_hash)
                 log "err: #{sid} | #{new_hash} | #{old_hash} | #{JSON.stringify(song)}", 'err'
     .catch (err) ->
         log "err: #{sid} | #{JSON.stringify(err)}", 'err'
