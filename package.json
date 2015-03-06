@@ -10,7 +10,6 @@
   "dependencies": {
     "MD5": "^1.2.1",
     "moment": "^2.9.0",
-    "musicmetadata": "^1.0.0",
     "nokit": "^0.5.4"
   }
 }
