@@ -52,10 +52,10 @@ verify_song = (sid) ->
                 logs[sid] = new_hash
                 return kit.outputFile('hash.txt', JSON.stringify(logs))
 
-            if not _.isEqual(new_hash, old_hash)
-                log "err: #{sid} | #{new_hash} | #{old_hash} | #{JSON.stringify(song)}", 'err'
+            if _.isEqual(new_hash, old_hash)
+                log "#{sid}, #{new_hash}, #{old_hash}, #{JSON.stringify(song)}", 'err'
     .catch (err) ->
-        log "err: #{sid} | #{JSON.stringify(err)}", 'err'
+        log "#{sid}, #{JSON.stringify(err)}", 'err'
 
 module.exports = (task, option) ->
     task 'default', ->
