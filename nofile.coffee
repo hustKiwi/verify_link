@@ -6,7 +6,7 @@ cfg = require './cfg'
 kit.require 'jhash'
 kit.require 'colors'
 
-{ _, jhash } = kit
+{ _, jhash, Promise } = kit
 
 logs = {}
 
@@ -22,25 +22,32 @@ curl = (url) ->
     })
 
 parse_songinfo = (r) ->
-    info = {}
-    r = JSON.parse(r)
+    new Promise (resolve, reject) ->
+        info = {}
 
-    if r.errorCode is 22000
-        song = r.data.songList[0]
-        info.id = song.songId
-        info.name = song.songName
+        try
+            r = JSON.parse(r)
+        catch err
+            reject(err)
 
-    if cfg.xcode
-        info.link = song.songLink
-    else
-        link = url.parse song.songLink
-        info.link = "#{link.protocol}//#{link.host}#{link.pathname}"
+        if r.errorCode is 22001
+            song = r.data.songList[0]
+            info.id = song.songId
+            info.name = song.songName
+        else
+            reject(r)
 
-    info
+        if cfg.xcode
+            info.link = song.songLink
+        else
+            link = url.parse song.songLink
+            info.link = "#{link.protocol}//#{link.host}#{link.pathname}"
+
+        resolve(info)
 
 log = (msg, type = 'log') ->
     kit.exec """
-        echo #{moment().format('MMMM Do YYYY, h:mm:ss a') + ': ' + msg} >> #{type}.txt
+        echo '#{moment().format('MMMM Do YYYY, h:mm:ss a') + ': ' + msg}' >> #{type}.txt
     """
     kit[type](msg[if type is 'log' then 'green' else 'red'])
 
@@ -63,7 +70,7 @@ verify_song = (sid) ->
             if not _.isEqual(new_hash, old_hash)
                 log "#{sid}, #{new_hash}, #{old_hash}, #{JSON.stringify(song)}", 'err'
     .catch (err) ->
-        log "#{sid}, #{JSON.stringify(err)}", 'err'
+        log "sid: #{sid}, #{JSON.stringify(err)}", 'err'
 
 module.exports = (task, option) ->
     task 'default', ->
