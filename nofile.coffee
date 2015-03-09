@@ -1,3 +1,4 @@
+url = require 'url'
 kit = require 'nokit'
 moment = require 'moment'
 cfg = require './cfg'
@@ -23,11 +24,18 @@ curl = (url) ->
 parse_songinfo = (r) ->
     info = {}
     r = JSON.parse(r)
+
     if r.errorCode is 22000
         song = r.data.songList[0]
         info.id = song.songId
-        info.link = song.songLink
         info.name = song.songName
+
+    if cfg.xcode
+        info.link = song.songLink
+    else
+        link = url.parse song.songLink
+        info.link = "#{link.protocol}//#{link.host}#{link.pathname}"
+
     info
 
 log = (msg, type = 'log') ->
