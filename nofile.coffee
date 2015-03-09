@@ -30,7 +30,7 @@ parse_songinfo = (r) ->
         catch err
             reject(err)
 
-        if r.errorCode is 22001
+        if r.errorCode is 22000
             song = r.data.songList[0]
             info.id = song.songId
             info.name = song.songName
