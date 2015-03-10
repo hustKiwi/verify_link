@@ -4,6 +4,7 @@
 *.txt
 .idea
 .coffee
+log
 node_modules
 
 # Compiled source #
